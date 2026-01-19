@@ -11,7 +11,7 @@ app.use(cors());
 // 1. Rate Limiting: Apply this BEFORE the routes
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 5, // Limit each IP to 5 requests per hour
+  max: 50, // Limit each IP to 5 requests per hour
   message: { error: 'Too many requests from this IP, please try again after an hour' }
 });
 
@@ -20,11 +20,16 @@ app.use('/api/contact', limiter);
 
 // 2. Configure Email Transporter
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // use SSL
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: {
+    rejectUnauthorized: false // Helps prevent connection timeouts on cloud hosts
+  }
 });
 
 // 3. Contact Route
