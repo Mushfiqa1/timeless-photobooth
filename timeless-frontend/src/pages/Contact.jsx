@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'; // Added useEffect
+import React, { useState, useEffect } from 'react';
 
-const Contact = ({ selectedService }) => { // Accept the prop here
+const Contact = ({ selectedService }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '', lastName: '', email: '', phone: '',
     services: [], date: '', message: ''
   });
 
-  // Automatically update the message box when a service is selected above
+  // Syncs the "Vision" box with selections from the Packages section
   useEffect(() => {
     if (selectedService) {
       setFormData(prev => ({
@@ -17,17 +17,16 @@ const Contact = ({ selectedService }) => { // Accept the prop here
     }
   }, [selectedService]);
 
-  const handleServiceChange = (service) => {
-    setFormData(prev => ({
-      ...prev,
-      services: prev.services.includes(service)
-        ? prev.services.filter(s => s !== service)
-        : [...prev.services, service]
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1. Mandatory Phone Validation (Ensures at least 10 digits for North American numbers)
+    const phoneDigits = formData.phone.replace(/\D/g, ''); // Removes dashes/spaces
+    if (phoneDigits.length < 10) {
+      alert("Please enter a valid 10-digit phone number so we can reach you.");
+      return;
+    }
+
     try {
       const response = await fetch('https://timeless-backend-dte0.onrender.com/api/contact', {
         method: 'POST',
@@ -58,6 +57,8 @@ const Contact = ({ selectedService }) => { // Accept the prop here
 
         {!isSubmitted ? (
           <form onSubmit={handleSubmit} className="space-y-10 bg-white/40 backdrop-blur-sm p-8 md:p-16 rounded-3xl border border-[#E0DED7]/60 shadow-xl animate-in fade-in duration-700">
+            
+            {/* Name Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
               <div className="space-y-2">
                 <label className="block text-[10px] uppercase tracking-[0.3em] font-bold text-[#5D4037]/80">First Name *</label>
@@ -69,22 +70,33 @@ const Contact = ({ selectedService }) => { // Accept the prop here
               </div>
             </div>
 
+            {/* Email and Mandatory Phone Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
               <div className="space-y-2">
                 <label className="block text-[10px] uppercase tracking-[0.3em] font-bold text-[#5D4037]/80">Email Address *</label>
                 <input type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full bg-transparent border-b border-[#D7C4B7] py-2 outline-none" />
               </div>
               <div className="space-y-2">
-                <label className="block text-[10px] uppercase tracking-[0.3em] font-bold text-[#5D4037]/80">Phone Number</label>
-                <input type="tel" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="w-full bg-transparent border-b border-[#D7C4B7] py-2 outline-none" />
+                {/* Updated Label and Input for Mandatory Phone */}
+                <label className="block text-[10px] uppercase tracking-[0.3em] font-bold text-[#5D4037]/80">Phone Number *</label>
+                <input 
+                  type="tel" 
+                  required 
+                  placeholder="(647) 000-0000"
+                  value={formData.phone} 
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})} 
+                  className="w-full bg-transparent border-b border-[#D7C4B7] py-2 outline-none" 
+                />
               </div>
             </div>
 
+            {/* Date Selection */}
             <div className="space-y-2 w-full md:w-1/2">
               <label className="block text-[10px] uppercase tracking-[0.3em] font-bold text-[#5D4037]/80">Event Date *</label>
               <input type="date" required value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} className="w-full bg-transparent border-b border-[#D7C4B7] py-2 outline-none" />
             </div>
 
+            {/* Vision Message Box */}
             <div className="space-y-2">
               <label className="block text-[10px] uppercase tracking-[0.3em] font-bold text-[#5D4037]/80">Vision *</label>
               <textarea rows="4" required value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} placeholder="Tell us about your celebration..." className="w-full bg-transparent border-b border-[#D7C4B7] py-2 outline-none resize-none"></textarea>
