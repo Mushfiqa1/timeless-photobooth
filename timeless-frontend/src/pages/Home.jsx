@@ -1,5 +1,5 @@
 import React from 'react';
-import cameraHero from '../assets/hero-camera.jpg'; 
+import cameraHero from '../assets/hero-camera.png'; 
 
 const Home = () => {
   return (
