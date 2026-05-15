@@ -4,8 +4,6 @@ import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Packages from './pages/Packages';
 import Gallery from './pages/Gallery';
-// then inside the return:
-<Gallery />
 
 function App() {
   const [selectedService, setSelectedService] = useState("");
@@ -50,10 +48,18 @@ function App() {
         </div>
       </nav>
 
+      {/* 1. HERO SECTION */}
       <section id="home"><Home /></section>
       
+      {/* 2. GALLERY SECTION (NOW FIRST AFTER HOME) */}
+      <section id="gallery">
+        <Gallery />
+      </section>
+
+      {/* 3. PACKAGES SECTION */}
       <Packages setSelectedService={setSelectedService} />
 
+      {/* 4. CONTACT SECTION */}
       <section id="contact">
         <Contact selectedService={selectedService} />
       </section>
@@ -85,7 +91,6 @@ function App() {
             </button>
 
             <div className="space-y-16">
-              {/* Terms Section */}
               <section>
                 <h2 className="serif-title text-2xl mb-8 border-b border-[#E0DED7] pb-4 uppercase tracking-widest text-[#5D4037]">Terms & Conditions</h2>
                 <div className="text-[11px] leading-relaxed text-[#5D4037]/80 space-y-6 text-left">
@@ -116,7 +121,6 @@ function App() {
                 </div>
               </section>
 
-              {/* Privacy Section */}
               <section>
                 <h2 className="serif-title text-2xl mb-8 border-b border-[#E0DED7] pb-4 uppercase tracking-widest text-[#5D4037]">Privacy Policy</h2>
                 <div className="text-[11px] leading-relaxed text-[#5D4037]/80 space-y-6 text-left">
