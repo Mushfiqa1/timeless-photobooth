@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
+// 1. IMPORT YOUR GALLERY GIFS
+import pic1 from '../assets/gallery/pic1.gif';
+import pic2 from '../assets/gallery/pic2.gif';
+import pic3 from '../assets/gallery/pic3.gif';
+import pic4 from '../assets/gallery/pic4.gif';
+
 const packages = [
   {
     id: "essential",
@@ -34,9 +40,12 @@ const packages = [
   }
 ];
 
-const Packages = ({ setSelectedService }) => { // Accept the prop here
+const Packages = ({ setSelectedService }) => {
   const [selectedPkg, setSelectedPkg] = useState(null);
   const [selectedAddons, setSelectedAddons] = useState([]);
+
+  // Gallery array for easy mapping
+  const galleryGifs = [pic1, pic2, pic3, pic4];
 
   useEffect(() => {
     if (selectedPkg?.includesDesign || selectedPkg?.includesGreenScreen) {
@@ -58,8 +67,6 @@ const Packages = ({ setSelectedService }) => { // Accept the prop here
 
   const handleSelect = (pkg) => {
     setSelectedPkg(pkg);
-    
-    // Convert IDs to readable names for the email summary
     const addonsNames = selectedAddons.map(id => {
       if (id === 'design') return "Custom Print Design";
       if (id === 'idle') return "Idle Hours";
@@ -68,18 +75,16 @@ const Packages = ({ setSelectedService }) => { // Accept the prop here
     });
 
     const summary = `Selected ${pkg.name} (${pkg.duration}) with: ${addonsNames.length > 0 ? addonsNames.join(", ") : "no additional add-ons"}.`;
-    
-    // Update the central state in App.jsx
     setSelectedService(summary); 
-    
     document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <section id="packages" className="bg-[#FAF9F6] py-24 px-8">
       <div className="max-w-7xl mx-auto">
+        
+        {/* --- PRICING SECTION --- */}
         <h2 className="serif-title text-center text-4xl mb-16">Our Packages</h2>
-
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           {packages.map((pkg) => (
             <div key={pkg.id} className={`package-card ${pkg.isPopular ? 'popular' : ''} ${selectedPkg?.id === pkg.id ? 'border-[#818C78] bg-[#fdfcf9]' : ''}`}>
@@ -101,39 +106,53 @@ const Packages = ({ setSelectedService }) => { // Accept the prop here
           ))}
         </div>
 
-        <div className="max-w-4xl mx-auto pt-12 border-t border-[#E0DED7]">
+        {/* --- CUSTOMIZATION SECTION --- */}
+        <div className="max-w-4xl mx-auto pt-12 border-t border-[#E0DED7] mb-24">
           <h4 className="serif-title text-center text-2xl mb-4">Customize Your Experience</h4>
           <p className="text-center text-xs text-gray-500 mb-12">Enhance your package with these optional add-ons.</p>
-          
           <div className="grid md:grid-cols-3 gap-12">
+            {/* Addons remain the same */}
             <div className="flex flex-col items-center text-center">
               <span className="font-bold text-[#5D4037]">Custom Print Design</span>
               <span className="text-[10px] text-[#818C78] uppercase mb-2">+$100 (Free in Signature/Grand)</span>
-              <p className="text-[10px] text-gray-400 leading-relaxed mb-4 px-4">Handcrafted layouts matching your branding. Every photo becomes a branded keepsake.</p>
               <button onClick={() => toggleAddon('design')} className={`w-12 h-6 rounded-full relative transition-all ${selectedAddons.includes('design') ? 'bg-[#818C78]' : 'bg-gray-200'}`}>
                 <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${selectedAddons.includes('design') ? 'right-1' : 'left-1'}`}></div>
               </button>
             </div>
-
             <div className="flex flex-col items-center text-center">
               <span className="font-bold text-[#5D4037]">Idle Hours</span>
               <span className="text-[10px] text-[#818C78] uppercase mb-2">+$75 per hour</span>
-              <p className="text-[10px] text-gray-400 leading-relaxed mb-4 px-4">Covers attendant standby time for early setups before the party starts.</p>
               <button onClick={() => toggleAddon('idle')} className={`w-12 h-6 rounded-full relative transition-all ${selectedAddons.includes('idle') ? 'bg-[#818C78]' : 'bg-gray-200'}`}>
                 <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${selectedAddons.includes('idle') ? 'right-1' : 'left-1'}`}></div>
               </button>
             </div>
-
             <div className="flex flex-col items-center text-center">
               <span className="font-bold text-[#5D4037]">Green Screen</span>
               <span className="text-[10px] text-[#818C78] uppercase mb-2">Included in Signature/Grand</span>
-              <p className="text-[10px] text-gray-400 leading-relaxed mb-4 px-4">Transport guests to any location instantly using virtual backdrop software.</p>
               <button onClick={() => toggleAddon('green')} className={`w-12 h-6 rounded-full relative transition-all ${selectedAddons.includes('green') ? 'bg-[#818C78]' : 'bg-gray-200'}`}>
                 <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${selectedAddons.includes('green') ? 'right-1' : 'left-1'}`}></div>
               </button>
             </div>
           </div>
         </div>
+
+        {/* --- THE GALLERY (REPLACED PLACEHOLDER) --- */}
+        <div id="gallery" className="pt-16 border-t border-[#E0DED7]">
+          <h2 className="serif-title text-center text-3xl mb-12 uppercase tracking-widest">The Gallery</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {galleryGifs.map((gif, index) => (
+              <div key={index} className="aspect-video bg-gray-100 overflow-hidden rounded-sm shadow-sm">
+                <img 
+                  src={gif} 
+                  alt={`Experience ${index + 1}`} 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   );
