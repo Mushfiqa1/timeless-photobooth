@@ -3,6 +3,9 @@ import logo from './assets/logo.png';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Packages from './pages/Packages';
+import Gallery from './pages/Gallery';
+// then inside the return:
+<Gallery />
 
 function App() {
   const [selectedService, setSelectedService] = useState("");
