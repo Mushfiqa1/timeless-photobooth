@@ -52,14 +52,6 @@ function App() {
 
       <section id="home"><Home /></section>
       
-      <section id="gallery" className="py-40 bg-white text-center border-b border-[#E0DED7]/30">
-        <h2 className="text-[14px] uppercase tracking-[0.6em] font-light text-[#818C78] mb-4">Portfolio</h2>
-        <h3 className="text-4xl uppercase tracking-[0.2em] mb-16 serif-title">The Gallery</h3>
-        <div className="h-[600px] bg-[#FAF9F6] mx-auto max-w-6xl rounded-sm border border-[#E0DED7]/50 flex items-center justify-center italic text-[#818C78]">
-          Gallery Grid Coming Soon
-        </div>
-      </section>
-
       <Packages setSelectedService={setSelectedService} />
 
       <section id="contact">
